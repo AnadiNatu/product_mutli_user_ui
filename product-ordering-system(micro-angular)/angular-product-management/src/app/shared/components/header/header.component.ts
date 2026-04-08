@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   
-//   user = this.authService.userSignal;
+  user = this.authService.userSignal;
 
   constructor(
     private authService: AuthService,

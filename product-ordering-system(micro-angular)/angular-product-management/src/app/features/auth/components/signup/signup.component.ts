@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { SignUpDTO } from '../../../../core/models/user.model';
+import { CommonModule } from '@angular/common';
+import { CustomCurrencyPipe } from '../../../../shared/pipes/custom-currency.pipe';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
-  standalone: true
+  standalone: true,
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule , ReactiveFormsModule],
 })
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;

@@ -1,13 +1,17 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Router, RouterModule } from "@angular/router";
 import { CreateProductDTO } from "../../../../core/models/product.model";
 import { AdminService } from "../../services/admin.service";
+import { CommonModule } from "@angular/common";
+import { CustomCurrencyPipe } from "../../../../shared/pipes/custom-currency.pipe";
 
 @Component({
   selector: 'app-create-product',
   templateUrl: './create-product.component.html',
-  styleUrls: ['./create-product.component.css']
+  styleUrls: ['./create-product.component.css'],
+  standalone : true , 
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule ,  ReactiveFormsModule],
 })
 export class CreateProductComponent {
   productForm: FormGroup;

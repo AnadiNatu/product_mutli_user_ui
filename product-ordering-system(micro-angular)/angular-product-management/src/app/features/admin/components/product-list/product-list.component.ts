@@ -1,12 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { Product } from "../../../../core/models/product.model";
 import { AdminService } from "../../services/admin.service";
+import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CustomCurrencyPipe } from "../../../../shared/pipes/custom-currency.pipe";
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  styleUrls: ['./product-list.component.css'],
+  standalone : true , 
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule ,  ReactiveFormsModule],
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];

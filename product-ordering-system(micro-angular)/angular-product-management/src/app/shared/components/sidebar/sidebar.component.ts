@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, RouterLink } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
 import { UserRole } from '../../../core/models/user.model';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CustomCurrencyPipe } from '../../pipes/custom-currency.pipe';
 
 interface MenuItem {
   label: string;
@@ -15,6 +18,8 @@ interface MenuItem {
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
+  
+  imports: [FormsModule , CommonModule , CustomCurrencyPipe , RouterLink],
   styleUrls: ['./sidebar.component.css'],
   standalone: true
 })

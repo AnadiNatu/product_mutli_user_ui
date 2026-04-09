@@ -19,17 +19,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    SignupComponent,
-    ForgotPasswordComponent,
-    ResetPasswordComponent,
-    HomePageComponent
-  ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+     LoginComponent,
+    SignupComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    HomePageComponent,
     RouterModule.forChild(routes)
   ]
 })

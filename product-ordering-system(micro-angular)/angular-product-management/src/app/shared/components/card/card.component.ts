@@ -1,9 +1,16 @@
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Component, Input, Output, EventEmitter, booleanAttribute } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { CustomCurrencyPipe } from '../../pipes/custom-currency.pipe';
+import { HighlightDirective } from '../../directives/highlight.directive';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.css'],
+  standalone : true , 
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule , TitleCasePipe , HighlightDirective],
 })
 export class CardComponent {
   /*

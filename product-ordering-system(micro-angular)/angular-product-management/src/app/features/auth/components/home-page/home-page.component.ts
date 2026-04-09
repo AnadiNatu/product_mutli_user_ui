@@ -1,12 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { CustomCurrencyPipe } from '../../../../shared/pipes/custom-currency.pipe';
+import { HighlightDirective } from '../../../../shared/directives/highlight.directive';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
-  standalone: true
-
+standalone : true , 
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule , HighlightDirective],
 })
 export class HomePageComponent {
   

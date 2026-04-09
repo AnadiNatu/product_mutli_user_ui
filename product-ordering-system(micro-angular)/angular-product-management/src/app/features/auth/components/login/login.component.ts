@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LoginCredentials, UserRole } from '../../../../core/models/user.model';
+import { CommonModule } from '@angular/common';
+import { CustomCurrencyPipe } from '../../../../shared/pipes/custom-currency.pipe';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  standalone: true
+  standalone: true,
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule , ReactiveFormsModule],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

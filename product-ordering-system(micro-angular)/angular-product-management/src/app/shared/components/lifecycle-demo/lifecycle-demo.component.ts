@@ -137,7 +137,7 @@ export class LifecycleDemoComponent
   /**
    * Clear logs (for demo purposes)
    */
-//   clearLogs(): void {
-//     this.lifecycleLogs = [];
-//   }
+  clearLogs(): void {
+    this.lifecycleLogs = [];
+  }
 }

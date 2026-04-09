@@ -1,13 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Router, RouterLink, RouterModule } from "@angular/router";
 import { Product, CreateOrderDTO } from "../../../../core/models/product.model";
 import { AdminService } from "../../services/admin.service";
+import { CommonModule } from "@angular/common";
+import { CustomCurrencyPipe } from "../../../../shared/pipes/custom-currency.pipe";
 
 @Component({
   selector: 'app-create-order',
   templateUrl: './create-order.component.html',
-  styleUrls: ['./create-order.component.css']
+  styleUrls: ['./create-order.component.css'],
+  standalone : true , 
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule , ReactiveFormsModule],
 })
 export class CreateOrderComponent implements OnInit {
   orderForm: FormGroup;

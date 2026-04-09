@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../../core/models/user.model';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { CustomCurrencyPipe } from '../../pipes/custom-currency.pipe';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  standalone : true,
+  imports: [FormsModule , CommonModule , CustomCurrencyPipe , RouterLink , ReactiveFormsModule],
 })
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;

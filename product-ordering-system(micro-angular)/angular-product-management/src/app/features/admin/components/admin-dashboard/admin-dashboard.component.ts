@@ -1,11 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterLink, RouterModule } from "@angular/router";
 import { Product, Order } from "../../../../core/models/product.model";
 import { AdminService } from "../../services/admin.service";
+import { FormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
+import { CustomCurrencyPipe } from "../../../../shared/pipes/custom-currency.pipe";
+import { HighlightDirective } from "../../../../shared/directives/highlight.directive";
 
 
 @Component({
   selector: 'app-admin-dashboard',
+  standalone: true,
+  imports: [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule , HighlightDirective],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
@@ -36,7 +42,7 @@ export class AdminDashboardComponent implements OnInit {
   /**
    * Load all dashboard data
    */
-  private loadDashboardData(): void {
+  public loadDashboardData(): void {
     this.isLoading = true;
 
     // Load stats

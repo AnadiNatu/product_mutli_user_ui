@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CustomCurrencyPipe } from '../../pipes/custom-currency.pipe';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  standalone : true
+  standalone : true,
+  imports: [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule],
 })
 export class HeaderComponent implements OnInit {
   

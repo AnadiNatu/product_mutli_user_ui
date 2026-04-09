@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ForgotPasswordRequest } from '../../../../core/models/user.model';
+import { CommonModule } from '@angular/common';
+import { CustomCurrencyPipe } from '../../../../shared/pipes/custom-currency.pipe';
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css'],
-  standalone: true
+standalone: true,
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule , ReactiveFormsModule],
 })
 export class ForgotPasswordComponent {
   forgotPasswordForm: FormGroup;

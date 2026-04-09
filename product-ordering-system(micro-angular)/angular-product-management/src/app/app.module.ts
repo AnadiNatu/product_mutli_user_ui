@@ -8,25 +8,23 @@ import { AppComponent } from './app.component';
 // Import Core and Shared modules
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-
-
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [
     // Angular Core Modules
     BrowserModule,
     HttpClientModule,
-    
+
     // Application Modules
-    CoreModule,      // Import once - contains singleton services
-    SharedModule,    // Can be imported by feature modules
-    
-    // Routing (must be last)
-    AppRoutingModule
+    CoreModule,
+    SharedModule,
+
+    // Routing
+    AppRoutingModule,
+
+    // ✅ Import standalone AppComponent
+    AppComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,13 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { Order } from "../../../../core/models/product.model";
 import { AdminService } from "../../services/admin.service";
+import { CommonModule } from "@angular/common";
+import { CustomCurrencyPipe } from "../../../../shared/pipes/custom-currency.pipe";
 
 @Component({
   selector: 'app-update-order',
   templateUrl: './update-order.component.html',
-  styleUrls: ['./update-order.component.css']
+  styleUrls: ['./update-order.component.css'],
+  standalone : true , 
+  imports : [FormsModule , CommonModule , CustomCurrencyPipe , RouterModule ,  ReactiveFormsModule],
 })
 export class UpdateOrderComponent implements OnInit {
   orderForm!: FormGroup;

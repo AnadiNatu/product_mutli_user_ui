@@ -11,17 +11,17 @@
               Welcome to <span class="text-gradient">OrderFlow Pro</span>
             </h1>
             <p class="lead mb-4 text-muted animate-fade-in-delay-1">
-              Your all-in-one solution for product and order management. 
+              Your all-in-one solution for product and order management.
               Streamline your operations, boost productivity, and grow your business.
             </p>
-            
-            <!-- CTA Buttons -->
+
+            <!-- ✅ FIXED: Use only (click) handlers, no conflicting routerLink -->
             <div class="d-flex gap-3 mb-4 animate-fade-in-delay-2">
-              <button class="btn btn-primary btn-lg px-4" routerLink="/auth/login">
+              <button class="btn btn-primary btn-lg px-4" (click)="goToLogin()">
                 <i class="bi bi-box-arrow-in-right me-2"></i>
                 Get Started
               </button>
-              <button class="btn btn-outline-primary btn-lg px-4" routerLink="/auth/signup">
+              <button class="btn btn-outline-primary btn-lg px-4" (click)="goToSignup()">
                 <i class="bi bi-person-plus me-2"></i>
                 Sign Up Free
               </button>

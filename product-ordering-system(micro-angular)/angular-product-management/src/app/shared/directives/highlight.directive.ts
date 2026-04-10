@@ -2,7 +2,8 @@ import { Directive, ElementRef, HostListener, Input, HostBinding } from '@angula
 
 
 @Directive({
-  selector: '[appHighlight]'
+  selector: '[appHighlight]',
+  standalone : true
 })
 export class HighlightDirective {
   /*

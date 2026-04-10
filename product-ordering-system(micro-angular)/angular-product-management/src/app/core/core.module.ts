@@ -9,9 +9,9 @@ import { StorageService } from './services/storage.service';
 @NgModule({
   imports: [CommonModule],
   providers: [
-    AuthService,
-    StorageService,
-    AuthGuard
+    // AuthService,
+    // StorageService,
+    // AuthGuard
   ]
 })
 export class CoreModule {

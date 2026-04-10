@@ -1,3 +1,4 @@
+import { CommonModule } from "@angular/common";
 import { Component, OnInit, OnDestroy, AfterViewInit, DoCheck } from "@angular/core";
 import { Router, NavigationStart, NavigationEnd, NavigationError, RouterModule } from "@angular/router";
 import { filter } from "rxjs";
@@ -5,7 +6,7 @@ import { filter } from "rxjs";
 @Component({
    selector: 'app-root',
   standalone: true,
-  imports: [RouterModule], // ✅ required for <router-outlet>
+  imports: [RouterModule , CommonModule], // ✅ required for <router-outlet>
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit, DoCheck {

@@ -22,7 +22,7 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
 
     // ✅ Import standalone AppComponent
-    AppComponent
+    // AppComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

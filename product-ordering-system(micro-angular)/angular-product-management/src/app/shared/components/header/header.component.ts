@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Signal } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CustomCurrencyPipe } from '../../pipes/custom-currency.pipe';
+import { User } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,7 @@ import { CustomCurrencyPipe } from '../../pipes/custom-currency.pipe';
 })
 export class HeaderComponent implements OnInit {
   
-  user !: any;
+  user !: Signal<User | null>;
 
   constructor(
     private authService: AuthService,

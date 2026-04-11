@@ -18,18 +18,15 @@ interface MenuItem {
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  
-  imports: [FormsModule , CommonModule , CustomCurrencyPipe , RouterLink],
+  imports: [FormsModule , CommonModule , RouterLink],
   styleUrls: ['./sidebar.component.css'],
   standalone: true
 })
 export class SidebarComponent implements OnInit {
-  activeRoute: string = '';
+ activeRoute: string = '';
   menuItems: MenuItem[] = [];
 
-  // All possible menu items
   private allMenuItems: MenuItem[] = [
-    // Admin Menu Items
     {
       label: 'Dashboard',
       icon: 'bi-speedometer2',
@@ -79,26 +76,6 @@ export class SidebarComponent implements OnInit {
       icon: 'bi-heart-pulse',
       route: '/admin/health',
       roles: [UserRole.ADMIN]
-    },
-    
-    // User Menu Items
-    {
-      label: 'Browse Products',
-      icon: 'bi-grid',
-      route: '/user/products',
-      roles: [UserRole.USER]
-    },
-    {
-      label: 'My Orders',
-      icon: 'bi-bag-check',
-      route: '/user/orders',
-      roles: [UserRole.USER]
-    },
-    {
-      label: 'My Profile',
-      icon: 'bi-person-circle',
-      route: '/user/profile',
-      roles: [UserRole.USER, UserRole.ADMIN]
     }
   ];
 
@@ -108,21 +85,17 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Set initial active route
     this.activeRoute = this.router.url;
 
-    // Subscribe to router events to track active route
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         this.activeRoute = event.url;
       });
 
-    // Filter menu items based on user role
     this.loadMenuItems();
   }
 
-  /*Load menu items based on current user role*/
   private loadMenuItems(): void {
     const userRole = this.authService.getUserRole();
     
@@ -131,7 +104,6 @@ export class SidebarComponent implements OnInit {
       return;
     }
 
-    // Filter menu items that match user's role
     this.menuItems = this.allMenuItems.filter(item => 
       item.roles.includes(userRole)
     );
@@ -139,12 +111,10 @@ export class SidebarComponent implements OnInit {
     console.log('Sidebar menu loaded for role:', userRole, this.menuItems);
   }
 
-  /*Check if route is active*/
   isActive(route: string): boolean {
     return this.activeRoute.startsWith(route);
   }
 
-  /*Navigate to route*/
   navigate(route: string): void {
     this.router.navigate([route]);
   }

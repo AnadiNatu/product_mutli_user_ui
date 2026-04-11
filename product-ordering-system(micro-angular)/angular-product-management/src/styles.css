@@ -1,13 +1,7 @@
-Global Application Styles
+/* Global Application Styles */
 
-/* Import Bootstrap (if using CDN, this can be removed) */
-{
-@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
+/* Import Bootstrap Icons */
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css');
-
-/* Import admin and auth styles */
-@import './app/features/admin/styles/admin.styles.css';
-@import './app/features/auth/styles/auth.styles.css';
 
 /* CSS Variables for Theming */
 :root {
@@ -79,11 +73,20 @@ a:hover {
   transform: translateY(-2px);
 }
 
+.btn:active {
+  transform: translateY(0);
+}
+
 /* Cards - Bootstrap Override */
 .card {
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
 }
 
 /* Form Controls - Bootstrap Override */
@@ -91,12 +94,21 @@ a:hover {
 .form-select {
   border-radius: 8px;
   border: 2px solid var(--border-color);
+  transition: border-color 0.3s ease;
 }
 
 .form-control:focus,
 .form-select:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: var(--danger-color);
+}
+
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
 }
 
 /* Custom Scrollbar */
@@ -130,6 +142,35 @@ a:hover {
   box-shadow: var(--shadow-lg);
 }
 
+/* Badge Enhancements */
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+}
+
+/* Alert Enhancements */
+.alert {
+  border-radius: var(--border-radius);
+  border: none;
+}
+
+/* Table Enhancements */
+.table {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.table thead {
+  background-color: var(--bg-light);
+}
+
+/* Loading Spinner */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.2em;
+}
+
 /* Animation Utilities */
 @keyframes fadeIn {
   from {
@@ -142,8 +183,48 @@ a:hover {
   }
 }
 
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
 .animate-fade-in {
   animation: fadeIn 0.6s ease;
+}
+
+.shake {
+  animation: shake 0.5s ease;
+}
+
+/* Main Content Area */
+.main-content {
+  margin-left: 260px;
+  margin-top: 64px;
+  padding: 2rem;
+  min-height: calc(100vh - 64px);
+}
+
+/* Responsive Main Content */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
 
 /* Responsive Typography */
@@ -167,8 +248,39 @@ a:hover {
 
 /* Print Styles */
 @media print {
-  .no-print {
+  .no-print,
+  .sidebar,
+  .header,
+  .btn,
+  .navbar {
     display: none !important;
   }
+
+  .main-content {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: white;
+  }
 }
+
+/* Accessibility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus Visible */
+*:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
 }

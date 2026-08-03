@@ -12,7 +12,7 @@ import { ProductService } from "../../../../core/services/product.service";
   selector: 'app-create-product',
   templateUrl: './create-product.component.html',
   styleUrls: ['./create-product.component.css'],
-  imports: [RouterLink, CommonModule , FormsModule, ReactiveFormsModule , HighlightDirective , CustomCurrencyPipe],
+  imports: [CommonModule , FormsModule, ReactiveFormsModule],
 })
 export class CreateProductComponent {
   productForm : FormGroup;
@@ -112,9 +112,11 @@ export class CreateProductComponent {
  
     const dto: CreateProductDTO = {
       productName     : this.productForm.value.productName,
-      productDesc     : this.productForm.value.productDesc,
+      description     : this.productForm.value.productDesc,
       price           : this.productForm.value.price,
-      productInventory: this.productForm.value.productInventory,
+      stockQuantity: this.productForm.value.stockQuantity,
+      category : this.productForm.value.category,
+      sku : this.productForm.value.sku,
     };
  
     // Step 1 — create product record

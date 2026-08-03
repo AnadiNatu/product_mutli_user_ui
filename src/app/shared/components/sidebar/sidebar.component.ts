@@ -21,7 +21,7 @@ interface MenuItem {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterModule, CommonModule, HighlightDirective]
+  imports: [RouterLink, RouterLinkActive, RouterModule, CommonModule]
 })
 export class SidebarComponent implements OnInit , OnDestroy {
 
@@ -111,4 +111,8 @@ export class SidebarComponent implements OnInit , OnDestroy {
   isActive(route: string): boolean {
     return this.activeRoute.startsWith(route);
   }
+
+  testClick(): void {
+  console.log('Sidebar clicked');
+}
 }

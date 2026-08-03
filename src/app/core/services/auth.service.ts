@@ -101,6 +101,7 @@ export class AuthService {
       fname,
       lname,
       email: response.email || email,
+      roles,
       role,
       username,
       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=4f46e5&color=fff`

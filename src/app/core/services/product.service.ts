@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
+import { environment } from '../../../environments/environment';
 
 // ─── Response shapes returned by the Spring controllers ───────────────────────
 
@@ -19,14 +20,59 @@ export interface ImageDeleteResponse {
 @Injectable({ providedIn: 'root' })
 export class ProductService {
 
+  private readonly BASE_SUFFIX = environment.apiBaseUrl;
+
   // All requests go through the API Gateway on 8083
-  private readonly BASE = 'http://localhost:8083/api/products';
+  private readonly BASE = `${this.BASE_SUFFIX}/api/products`;
 
   constructor(private http: HttpClient) {}
 
-  // ══════════════════════════════════════════════════════════════════════════
   //  Core product endpoints  (no PageResponse — arrays / single objects only)
-  // ══════════════════════════════════════════════════════════════════════════
+
+
+public mapProduct(product: any): Product {
+  return {
+    productId: product.productId ?? product.id ?? 0,
+
+    productName: product.productName ?? '',
+
+    description: product.description ?? '',
+
+    price: Number(product.price ?? 0),
+
+    sku: product.sku ?? '',
+
+    category: product.category ?? '',
+
+    image: product.image ?? product.imageUrl ?? '',
+
+    imageUrl: product.imageUrl ?? product.image ?? '',
+
+    productOrderIds: product.productOrderIds ?? [],
+
+    active: product.active ?? true,
+
+    stockQuantity: Number(product.stockQuantity ?? 0),
+
+    createdByUsername: product.createdByUsername
+      ?? product.creatorUsername
+      ?? '',
+
+    createdByUserId: Number(
+      product.createdByUserId
+      ?? product.creatorUserId
+      ?? 0
+    ),
+
+    createdOn: product.createdOn
+      ? new Date(product.createdOn)
+      : new Date(),
+
+    updatedOn: product.updatedOn
+      ? new Date(product.updatedOn)
+      : new Date()
+  };
+}
 
   /** GET /api/products  →  Product[] */
   getAllProducts(): Observable<Product[]> {
@@ -104,15 +150,9 @@ export class ProductService {
     return this.http.get<boolean>(`${this.BASE}/${productId}/available`);
   }
 
-  // ══════════════════════════════════════════════════════════════════════════
   //  Supabase image endpoints
   //  Controller base: /api/products/{productId}/images
-  // ══════════════════════════════════════════════════════════════════════════
 
-  /**
-   * POST /api/products/{productId}/images/upload
-   * Multipart upload — returns { message, imageUrl }.
-   */
   uploadProductImage(
     productId: number,
     file: File
@@ -125,12 +165,6 @@ export class ProductService {
     );
   }
 
-  /**
-   * PUT /api/products/{productId}/images/update?oldImageUrl=…
-   * Replaces existing image. Pass oldImageUrl so the backend deletes the
-   * previous Supabase file before uploading the new one.
-   * Returns { message, imageUrl }.
-   */
   updateProductImage(
     productId: number,
     file: File,
@@ -149,10 +183,6 @@ export class ProductService {
     );
   }
 
-  /**
-   * DELETE /api/products/{productId}/images/delete?imageUrl=…
-   * Returns { message } on success.
-   */
   deleteProductImage(
     productId: number,
     imageUrl: string
@@ -164,10 +194,6 @@ export class ProductService {
     );
   }
 
-  /**
-   * GET /api/products/{productId}/images/list
-   * Returns raw JSON string from Supabase Storage listing.
-   */
   listProductImages(productId: number): Observable<string> {
     return this.http.get<string>(
       `${this.BASE}/${productId}/images/list`

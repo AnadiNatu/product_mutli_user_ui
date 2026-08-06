@@ -11,7 +11,7 @@ import { CustomCurrencyPipe } from "../../../../shared/pipes/custom-currency.pip
   selector: 'app-update-order',
   templateUrl: './update-order.component.html',
   styleUrls: ['./update-order.component.css'],
-  imports: [CommonModule , FormsModule, ReactiveFormsModule , HighlightDirective],
+  imports: [CommonModule , FormsModule, ReactiveFormsModule],
 })
 export class UpdateOrderComponent implements OnInit {
   orderForm!: FormGroup;

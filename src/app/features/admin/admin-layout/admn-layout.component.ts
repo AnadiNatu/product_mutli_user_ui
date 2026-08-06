@@ -19,7 +19,7 @@ import { HighlightDirective } from '../../../shared/directives/highlight.directi
     RouterLink,
     HeaderComponent,
     SidebarComponent,
-    HighlightDirective
+    // HighlightDirective
   ]
 })
 export class AdminLayoutComponent {

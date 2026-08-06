@@ -24,6 +24,7 @@ export interface CreateProductDTO {
   stockQuantity : number;
   category : string;
   sku : string;
+  brand : string;
   createdByUserId ?: number;
 }
 

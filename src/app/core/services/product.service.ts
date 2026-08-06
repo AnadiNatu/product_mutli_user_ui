@@ -153,50 +153,81 @@ public mapProduct(product: any): Product {
   //  Supabase image endpoints
   //  Controller base: /api/products/{productId}/images
 
-  uploadProductImage(
-    productId: number,
-    file: File
-  ): Observable<ImageUploadResponse> {
-    const form = new FormData();
-    form.append('file', file);
-    return this.http.post<ImageUploadResponse>(
-      `${this.BASE}/${productId}/images/upload`,
-      form
-    );
-  }
+  // uploadProductImage(
+  //   productId: number,
+  //   file: File
+  // ): Observable<ImageUploadResponse> {
+  //   const form = new FormData();
+  //   form.append('file', file);
+  //   return this.http.post<ImageUploadResponse>(
+  //     `${this.BASE}/${productId}/images/upload`,
+  //     form
+  //   );
+  // }
 
-  updateProductImage(
-    productId: number,
-    file: File,
-    oldImageUrl: string | null = null
-  ): Observable<ImageUploadResponse> {
-    const form = new FormData();
-    form.append('file', file);
-    let params = new HttpParams();
-    if (oldImageUrl) {
-      params = params.set('oldImageUrl', oldImageUrl);
-    }
-    return this.http.put<ImageUploadResponse>(
-      `${this.BASE}/${productId}/images/update`,
-      form,
-      { params }
-    );
-  }
+  // updateProductImage(
+  //   productId: number,
+  //   file: File,
+  //   oldImageUrl: string | null = null
+  // ): Observable<ImageUploadResponse> {
+  //   const form = new FormData();
+  //   form.append('file', file);
+  //   let params = new HttpParams();
+  //   if (oldImageUrl) {
+  //     params = params.set('oldImageUrl', oldImageUrl);
+  //   }
+  //   return this.http.put<ImageUploadResponse>(
+  //     `${this.BASE}/${productId}/images/update`,
+  //     form,
+  //     { params }
+  //   );
+  // }
 
-  deleteProductImage(
-    productId: number,
-    imageUrl: string
-  ): Observable<ImageDeleteResponse> {
-    const params = new HttpParams().set('imageUrl', imageUrl);
-    return this.http.delete<ImageDeleteResponse>(
-      `${this.BASE}/${productId}/images/delete`,
-      { params }
-    );
-  }
+  // deleteProductImage(
+  //   productId: number,
+  //   imageUrl: string
+  // ): Observable<ImageDeleteResponse> {
+  //   const params = new HttpParams().set('imageUrl', imageUrl);
+  //   return this.http.delete<ImageDeleteResponse>(
+  //     `${this.BASE}/${productId}/images/delete`,
+  //     { params }
+  //   );
+  // }
+
+  uploadProductImage(productId: number, file: File): Observable<ImageUploadResponse> {
+  const form = new FormData();
+  form.append('file', file);
+  return this.http.post<ImageUploadResponse>(
+    `${this.BASE}/${productId}/image`,     // FIX: singular, matches ProductController
+    form
+  );
+}
+
+updateProductImage(productId: number, file: File): Observable<ImageUploadResponse> {
+  // Backend's ProductService.uploadProductImage() already handles
+  // "replace if exists" internally — no separate update endpoint needed.
+  const form = new FormData();
+  form.append('file', file);
+  return this.http.post<ImageUploadResponse>(
+    `${this.BASE}/${productId}/image`,
+    form
+  );
+}
+
+deleteProductImage(productId: number): Observable<ImageDeleteResponse> {
+  // FIX: backend DELETE /{productId}/image doesn't need imageUrl param —
+  // it reads product.imageUrl from the DB itself.
+  return this.http.delete<ImageDeleteResponse>(`${this.BASE}/${productId}/image`);
+}
 
   listProductImages(productId: number): Observable<string> {
     return this.http.get<string>(
       `${this.BASE}/${productId}/images/list`
     );
   }
+
+  /** GET /api/products/{productId}/image → { imageUrl: string | null } */
+getProductImage(productId: number): Observable<{ imageUrl: string | null }> {
+  return this.http.get<{ imageUrl: string | null }>(`${this.BASE}/${productId}/images/get`);
+}
 }

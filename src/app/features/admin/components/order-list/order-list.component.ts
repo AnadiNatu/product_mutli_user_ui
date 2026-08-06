@@ -11,7 +11,7 @@ import { CustomCurrencyPipe } from "../../../../shared/pipes/custom-currency.pip
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.css'],
-  imports: [RouterLink, CommonModule , FormsModule, ReactiveFormsModule ],
+  imports: [CommonModule , FormsModule, ReactiveFormsModule ],
 })
 export class OrderListComponent implements OnInit {
   orders: Order[] = [];

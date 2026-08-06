@@ -32,8 +32,8 @@ export class AdminService {
   // FIX: All calls go through the API Gateway, not direct service ports.
   //      Old code used DS1_URL=:8081 and DS2_URL=:8082 directly, bypassing
   //      the gateway auth filter so requests arrived without JWT headers.
-  private readonly GW = `${environment.apiBaseUrl}/api`;
-
+ private readonly BASE_SUFFIX = environment.apiBaseUrl;
+  private readonly ADMIN_BASE = `${this.BASE_SUFFIX}/api`;
   // ── Mock data (fallback when backend is unreachable) ─────────────────────────
   private mockProducts: Product[] = [
     {
@@ -156,7 +156,7 @@ export class AdminService {
   // GET /api/products?page=0&size=100&sortBy=createdOn  →  Page<ProductDto>
   getAllProducts(page = 0, size = 100): Observable<Product[]> {
     return this.http.get<PageResponse<any>>(
-      `${this.GW}/products?page=${page}&size=${size}&sortBy=createdOn`
+      `${this.ADMIN_BASE}/products?page=${page}&size=${size}&sortBy=createdOn`
     ).pipe(
       map(r => (r.content ?? (r as any) ?? []).map((p: any) => this.mapProduct(p))),
       catchError(() => of([...this.mockProducts]))
@@ -166,7 +166,7 @@ export class AdminService {
   // GET /api/products/active?page=0&size=50
   getActiveProducts(page = 0, size = 50): Observable<Product[]> {
     return this.http.get<PageResponse<any>>(
-      `${this.GW}/products/active?page=${page}&size=${size}`
+      `${this.ADMIN_BASE}/products/active?page=${page}&size=${size}`
     ).pipe(
       map(r => (r.content ?? (r as any) ?? []).map((p: any) => this.mapProduct(p))),
       catchError(() => of([...this.mockProducts]))
@@ -175,35 +175,44 @@ export class AdminService {
 
   // GET /api/products/{productId}
   getProduct(productId: number): Observable<Product> {
-    return this.http.get<any>(`${this.GW}/products/${productId}`).pipe(
+    return this.http.get<any>(`${this.ADMIN_BASE}/products/${productId}`).pipe(
       map(p => this.mapProduct(p))
     );
   }
 
   // POST /api/products
-  createProduct(product: CreateProductDTO): Observable<Product> {
-    return this.http.post<any>(`${this.GW}/products`, product).pipe(
-      map(p => this.mapProduct(p)),
-      catchError(() => {
-        const np: Product = {
-          productId: Date.now(), ...product,
-          description: product.description,
-          sku: product.sku,
-          stockQuantity: product.stockQuantity,
-          active: true,
-          image: '', createdByUsername: '', createdByUserId: 0,
-          createdOn: new Date(), updatedOn: new Date()
-        };
-        this.mockProducts.push(np);
-        return of(np);
-      })
-    );
-  }
+  // createProduct(product: CreateProductDTO): Observable<Product> {
+  //   return this.http.post<any>(`${this.ADMIN_BASE}/products`, product).pipe(
+  //     map(p => this.mapProduct(p)),
+  //     catchError(() => {
+  //       const np: Product = {
+  //         productId: Date.now(), ...product,
+  //         description: product.description,
+  //         sku: product.sku,
+  //         stockQuantity: product.stockQuantity,
+  //         active: true,
+  //         image: '', createdByUsername: '', createdByUserId: 0,
+  //         createdOn: new Date(), updatedOn: new Date()
+  //       };
+  //       this.mockProducts.push(np);
+  //       return of(np);
+  //     })
+  //   );
+  // }
+
+  // POST /api/products
+createProduct(product: CreateProductDTO): Observable<Product> {
+  return this.http.post<any>(`${this.ADMIN_BASE}/products`, product).pipe(
+    map(p => this.mapProduct(p))
+    // REMOVED catchError — a failed creation must fail loudly, not fake success.
+    // Let the component's error handler show the real message to the admin.
+  );
+}
 
   // FIX: Old code called PUT /products/{product.productName} (name in path).
   //      Backend controller is PUT /products/{productId} (ID in path).
   updateProduct(productId: number, product: Partial<UpdateProductDTO>): Observable<Product> {
-    return this.http.put<any>(`${this.GW}/products/${productId}`, product).pipe(
+    return this.http.put<any>(`${this.ADMIN_BASE}/products/${productId}`, product).pipe(
       map(p => this.mapProduct(p)),
       catchError(() => of({} as Product))
     );
@@ -222,7 +231,7 @@ export class AdminService {
   // GET /api/products/search?keyword=…
   searchProducts(keyword: string): Observable<Product[]> {
     return this.http.get<PageResponse<any>>(
-      `${this.GW}/products/search?keyword=${encodeURIComponent(keyword)}`
+      `${this.ADMIN_BASE}/products/search?keyword=${encodeURIComponent(keyword)}`
     ).pipe(
       map(r => (r.content ?? (r as any) ?? []).map((p: any) => this.mapProduct(p))),
       catchError(() =>
@@ -237,7 +246,7 @@ export class AdminService {
 
   // GET /api/products/{productId}/order-stats
   getProductOrderStats(productId: number): Observable<{ product: Product; totalOrders: number }> {
-    return this.http.get<any>(`${this.GW}/products/${productId}/order-stats`).pipe(
+    return this.http.get<any>(`${this.ADMIN_BASE}/products/${productId}/order-stats`).pipe(
       map(r => ({
         product:     this.mapProduct(r.product),
         totalOrders: r.totalOrders ?? 0
@@ -268,14 +277,13 @@ export class AdminService {
 }
 
 updateProductImage(productId: number,file: File,oldImageUrl: string | null = null): Observable<ImageUploadResponse> {
-  return this.productService.updateProductImage(productId,file,oldImageUrl);
+  return this.productService.updateProductImage(productId,file);
 }
 
 deleteProductImage(productId: number,imageUrl: string
 ): Observable<ImageDeleteResponse> {
   return this.productService.deleteProductImage(
     productId,
-    imageUrl
   );
 }
 
@@ -289,7 +297,7 @@ deleteProductImage(productId: number,imageUrl: string
   getAllOrders(page = 0, size = 50): Observable<Order[]> {
     const requests = ALL_ORDER_STATUSES.map(status =>
       this.http.get<PageResponse<any>>(
-        `${this.GW}/orders/status/${status}?page=${page}&size=${size}`
+        `${this.ADMIN_BASE}/orders/status/${status}?page=${page}&size=${size}`
       ).pipe(
         map(r => (r.content ?? (r as any) ?? []).map((o: any) => this.mapOrder(o))),
         catchError(() => of([] as Order[]))
@@ -303,7 +311,7 @@ deleteProductImage(productId: number,imageUrl: string
 
   // GET /api/orders/{orderId}
   getOrderById(orderId: number): Observable<Order> {
-    return this.http.get<any>(`${this.GW}/orders/${orderId}`).pipe(
+    return this.http.get<any>(`${this.ADMIN_BASE}/orders/${orderId}`).pipe(
       map(o => this.mapOrder(o))
     );
   }
@@ -311,7 +319,7 @@ deleteProductImage(productId: number,imageUrl: string
   // GET /api/orders/user/{userId}?page=0&size=100
   getOrdersByUserId(userId: number, page = 0, size = 100): Observable<Order[]> {
     return this.http.get<PageResponse<any>>(
-      `${this.GW}/orders/user/${userId}?page=${page}&size=${size}`
+      `${this.ADMIN_BASE}/orders/user/${userId}?page=${page}&size=${size}`
     ).pipe(
       map(r => (r.content ?? (r as any) ?? []).map((o: any) => this.mapOrder(o))),
       catchError(() => of(this.mockOrders.filter(o => o.userId === userId)))
@@ -321,7 +329,7 @@ deleteProductImage(productId: number,imageUrl: string
   // GET /api/orders/status/{status}?page=0&size=50
   getOrdersByStatus(status: string, page = 0, size = 50): Observable<Order[]> {
     return this.http.get<PageResponse<any>>(
-      `${this.GW}/orders/status/${status}?page=${page}&size=${size}`
+      `${this.ADMIN_BASE}/orders/status/${status}?page=${page}&size=${size}`
     ).pipe(
       map(r => (r.content ?? (r as any) ?? []).map((o: any) => this.mapOrder(o))),
       catchError(() => of([]))
@@ -330,7 +338,7 @@ deleteProductImage(productId: number,imageUrl: string
 
   // POST /api/orders  — payload is CreatedOrderDto (items[] + shipping)
   createOrder(order: CreatedOrderDto): Observable<Order> {
-    return this.http.post<any>(`${this.GW}/orders`, order).pipe(
+    return this.http.post<any>(`${this.ADMIN_BASE}/orders`, order).pipe(
       map(o => this.mapOrder(o)),
       catchError(err => { throw err; })
     );
@@ -338,14 +346,14 @@ deleteProductImage(productId: number,imageUrl: string
 
   // PUT /api/orders/{orderId}/status?status=XXX
   // FIX: Only status is updatable via the backend endpoint.
-  updateOrderStatus(orderId: number, status: string): Observable<Order> {
-    return this.http.put<any>(
-      `${this.GW}/orders/${orderId}/status?status=${status}`, {}
-    ).pipe(
-      map(o => this.mapOrder(o)),
-      catchError(() => of({} as Order))
-    );
-  }
+updateOrderStatus(orderId: number, status: string): Observable<Order> {
+  return this.http.put<any>(
+    `${this.ADMIN_BASE}/orders/${orderId}/status?status=${status}`, {}
+  ).pipe(
+    map(o => this.mapOrder(o))
+    // REMOVED catchError — let real failures reach the component's error handler
+  );
+}
 
   // Convenience alias: accepts an Order object, reads its status
   updateOrder(order: Order): Observable<Order> {
@@ -356,7 +364,7 @@ deleteProductImage(productId: number,imageUrl: string
   // FIX: Old deleteOrder(userId, productName) was passing userId as the order ID
   //      to cancel — completely wrong. Now takes orderId directly.
   cancelOrder(orderId: number): Observable<Order> {
-    return this.http.put<any>(`${this.GW}/orders/${orderId}/cancel`, {}).pipe(
+    return this.http.put<any>(`${this.ADMIN_BASE}/orders/${orderId}/cancel`, {}).pipe(
       map(o => this.mapOrder(o)),
       catchError(() => of({} as Order))
     );
@@ -369,7 +377,7 @@ deleteProductImage(productId: number,imageUrl: string
 
   // GET /api/orders/stats
   getOrderStatistics(): Observable<any> {
-    return this.http.get<any>(`${this.GW}/orders/stats`);
+    return this.http.get<any>(`${this.ADMIN_BASE}/orders/stats`);
   }
 
   // ===========================================================================
@@ -379,7 +387,7 @@ deleteProductImage(productId: number,imageUrl: string
   // GET /api/users (paginated)
   getAllUsers(page = 0, size = 100): Observable<User[]> {
     return this.http.get<PageResponse<any>>(
-      `${this.GW}/users?page=${page}&size=${size}`
+      `${this.ADMIN_BASE}/users?page=${page}&size=${size}`
     ).pipe(
       map(r => (r.content ?? (r as any) ?? []).map((u: any) => this.mapUser(u))),
       catchError(() => of([...this.mockUsers]))

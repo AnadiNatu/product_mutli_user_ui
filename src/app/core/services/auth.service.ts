@@ -6,13 +6,16 @@ import { Router } from '@angular/router';
 
 import { User, LoginCredentials, SignUpDTO, UserRole, ForgotPasswordRequest, ResetPasswordRequest } from '../models/user.model';
 import { StorageService } from './storage.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
- private readonly AUTH_URL = 'http://localhost:8083/api/auth';
-  private readonly PASSWORD_URL = 'http://localhost:8083/api/password';
+
+  private readonly BASE_SUFFIX = environment.apiBaseUrl;
+ private readonly AUTH_URL = `${this.BASE_SUFFIX}/api/auth`;
+  private readonly PASSWORD_URL = `${this.BASE_SUFFIX}/api/password`;
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();

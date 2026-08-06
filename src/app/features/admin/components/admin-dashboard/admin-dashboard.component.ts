@@ -21,7 +21,7 @@ import { CustomCurrencyPipe } from "../../../../shared/pipes/custom-currency.pip
     ReactiveFormsModule,
     RouterLink,
     HighlightDirective,
-    HeaderComponent,
+    // HeaderComponent,
     SidebarComponent,
     CustomCurrencyPipe
   ]

@@ -152,53 +152,11 @@ public mapProduct(product: any): Product {
 
   //  Supabase image endpoints
   //  Controller base: /api/products/{productId}/images
-
-  // uploadProductImage(
-  //   productId: number,
-  //   file: File
-  // ): Observable<ImageUploadResponse> {
-  //   const form = new FormData();
-  //   form.append('file', file);
-  //   return this.http.post<ImageUploadResponse>(
-  //     `${this.BASE}/${productId}/images/upload`,
-  //     form
-  //   );
-  // }
-
-  // updateProductImage(
-  //   productId: number,
-  //   file: File,
-  //   oldImageUrl: string | null = null
-  // ): Observable<ImageUploadResponse> {
-  //   const form = new FormData();
-  //   form.append('file', file);
-  //   let params = new HttpParams();
-  //   if (oldImageUrl) {
-  //     params = params.set('oldImageUrl', oldImageUrl);
-  //   }
-  //   return this.http.put<ImageUploadResponse>(
-  //     `${this.BASE}/${productId}/images/update`,
-  //     form,
-  //     { params }
-  //   );
-  // }
-
-  // deleteProductImage(
-  //   productId: number,
-  //   imageUrl: string
-  // ): Observable<ImageDeleteResponse> {
-  //   const params = new HttpParams().set('imageUrl', imageUrl);
-  //   return this.http.delete<ImageDeleteResponse>(
-  //     `${this.BASE}/${productId}/images/delete`,
-  //     { params }
-  //   );
-  // }
-
   uploadProductImage(productId: number, file: File): Observable<ImageUploadResponse> {
   const form = new FormData();
   form.append('file', file);
   return this.http.post<ImageUploadResponse>(
-    `${this.BASE}/${productId}/image`,     // FIX: singular, matches ProductController
+    `${this.BASE}/${productId}/images/upload`,     // FIX: singular, matches ProductController
     form
   );
 }
@@ -209,7 +167,7 @@ updateProductImage(productId: number, file: File): Observable<ImageUploadRespons
   const form = new FormData();
   form.append('file', file);
   return this.http.post<ImageUploadResponse>(
-    `${this.BASE}/${productId}/image`,
+    `${this.BASE}/${productId}/images/update`,
     form
   );
 }
@@ -217,7 +175,7 @@ updateProductImage(productId: number, file: File): Observable<ImageUploadRespons
 deleteProductImage(productId: number): Observable<ImageDeleteResponse> {
   // FIX: backend DELETE /{productId}/image doesn't need imageUrl param —
   // it reads product.imageUrl from the DB itself.
-  return this.http.delete<ImageDeleteResponse>(`${this.BASE}/${productId}/image`);
+  return this.http.delete<ImageDeleteResponse>(`${this.BASE}/${productId}/images/delete`);
 }
 
   listProductImages(productId: number): Observable<string> {
